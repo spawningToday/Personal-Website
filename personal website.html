@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicholas Bassett</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.8;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            opacity: 0.6;
+        }
+
+        nav a.active {
+            font-weight: 600;
+        }
+
+        .search-icon {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            font-size: 18px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .highlight {
+            background-color: #ffff00;
+            padding: 2px 0;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+            font-size: 17px;
+        }
+
+        a {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            opacity: 0.6;
+        }
+
+        .section {
+            margin-bottom: 3em;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 1em;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 1em;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            font-size: 8px;
+            top: 8px;
+        }
+
+        .date {
+            font-weight: 600;
+        }
+
+        .company {
+            font-weight: 600;
+        }
+
+        /* Goodreads widget styles */
+        .gr_custom_container_ {
+            border: 1px solid gray;
+            border-radius:10px;
+            padding: 10px 5px 10px 5px;
+            background-color: #FFF;
+            color: #000;
+            width: 300px;
+            margin-top: 2em;
+        }
+        .gr_custom_header_ {
+            border-bottom: 1px solid gray;
+            width: 100%;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 120%;
+        }
+        .gr_custom_each_container_ {
+            width: 100%;
+            clear: both;
+            margin-bottom: 10px;
+            overflow: auto;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #aaa;
+        }
+        .gr_custom_book_container_ {
+            overflow: hidden;
+            height: 60px;
+            float: left;
+            margin-right: 4px;
+            width: 39px;
+        }
+        .gr_custom_author_ {
+            font-size: 10px;
+        }
+        .gr_custom_tags_ {
+            font-size: 10px;
+            color: gray;
+        }
+        .gr_custom_rating_ {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">nicholas bassett</div>
+        <nav>
+            <a href="#" class="active">me</a>
+            <a href="#">Resume</a>
+            <a href="#">Projects</a>
+            <a href="#">Writing</a>
+            <a href="#">Contact</a>
+            <span class="search-icon">🔍</span>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>hi, i'm Nicholas. <span>21, UT</span></h1>
+
+        <div class="section">
+            <p><span class="highlight">i love to learn and plan on uploading my work here.</span></p>
+            <p><span class="highlight">byu 2027, fin major, cs minor</span></p>
+        </div>
+
+        <div class="section">
+            <p><strong>email:</strong> <a href="mailto:nicholasbassett01@gmail.com">nicholasbassett01@gmail.com</a> | <a href="mailto:richard@unhrd.xyz">richard@unhrd.xyz</a></p>
+            <p><strong>wanna connect?</strong> let's do <a href="https://cal.com/nicholas-b-5fwths">it</a>.</p>
+        </div>
+
+        <!-- Goodreads Widget -->
+        <div id="gr_custom_widget_">
+            <div class="gr_custom_container_">
+                <h2 class="gr_custom_header_">
+                    <a style="text-decoration: none;" rel="nofollow" href="https://www.goodreads.com/review/list/188265528-nb?shelf=read&amp;utm_medium=api&amp;utm_source=custom_widget">NB's bookshelf: read</a>
+                </h2>
+                <div class="gr_custom_each_container_">
+                    <div class="gr_custom_book_container_">
+                        <a title="The Shining (The Shining, #1)" rel="nofollow" href="https://www.goodreads.com/review/show/8055180969?utm_medium=api&amp;utm_source=custom_widget"><img alt="The Shining" border="0" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1353277730l/11588._SY75_.jpg" /></a>
+                    </div>
+                    <div class="gr_custom_rating_">
+                        <span class=" staticStars notranslate" title="really liked it"><img alt="really liked it" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /></span>
+                    </div>
+                    <div class="gr_custom_title_">
+                        <a rel="nofollow" href="https://www.goodreads.com/review/show/8055180969?utm_medium=api&amp;utm_source=custom_widget">The Shining</a>
+                    </div>
+                    <div class="gr_custom_author_">
+                        by <a rel="nofollow" href="https://www.goodreads.com/author/show/3389.Stephen_King">Stephen King</a>
+                    </div>
+                </div>
+                <div class="gr_custom_each_container_">
+                    <div class="gr_custom_book_container_">
+                        <a title="Hum" rel="nofollow" href="https://www.goodreads.com/review/show/8030496417?utm_medium=api&amp;utm_source=custom_widget"><img alt="Hum" border="0" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1699132200l/195791689._SY75_.jpg" /></a>
+                    </div>
+                    <div class="gr_custom_rating_">
+                        <span class=" staticStars notranslate" title="it was ok"><img alt="it was ok" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /></span>
+                    </div>
+                    <div class="gr_custom_title_">
+                        <a rel="nofollow" href="https://www.goodreads.com/review/show/8030496417?utm_medium=api&amp;utm_source=custom_widget">Hum</a>
+                    </div>
+                    <div class="gr_custom_author_">
+                        by <a rel="nofollow" href="https://www.goodreads.com/author/show/93757.Helen_Phillips">Helen Phillips</a>
+                    </div>
+                </div>
+                <div class="gr_custom_each_container_">
+                    <div class="gr_custom_book_container_">
+                        <a title="Becoming a Person of Influence: How to Positively Impact the Lives of Others" rel="nofollow" href="https://www.goodreads.com/review/show/8025852636?utm_medium=api&amp;utm_source=custom_widget"><img alt="Becoming a Person of Influence: How to Positively Impact the Lives of Others" border="0" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1380856326l/123685._SY75_.jpg" /></a>
+                    </div>
+                    <div class="gr_custom_rating_">
+                        <span class=" staticStars notranslate" title="it was ok"><img alt="it was ok" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /></span>
+                    </div>
+                    <div class="gr_custom_title_">
+                        <a rel="nofollow" href="https://www.goodreads.com/review/show/8025852636?utm_medium=api&amp;utm_source=custom_widget">Becoming a Person of Influence: How to Positively Impact the Lives of Others</a>
+                    </div>
+                    <div class="gr_custom_author_">
+                        by <a rel="nofollow" href="https://www.goodreads.com/author/show/68.John_C_Maxwell">John C. Maxwell</a>
+                    </div>
+                </div>
+                <div class="gr_custom_each_container_">
+                    <div class="gr_custom_book_container_">
+                        <a title="The Prisoner of Cell 25 (Michael Vey, #1)" rel="nofollow" href="https://www.goodreads.com/review/show/8015124259?utm_medium=api&amp;utm_source=custom_widget"><img alt="The Prisoner of Cell 25" border="0" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348544498l/11337912._SY75_.jpg" /></a>
+                    </div>
+                    <div class="gr_custom_rating_">
+                        <span class=" staticStars notranslate"><img src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /></span>
+                    </div>
+                    <div class="gr_custom_title_">
+                        <a rel="nofollow" href="https://www.goodreads.com/review/show/8015124259?utm_medium=api&amp;utm_source=custom_widget">The Prisoner of Cell 25</a>
+                    </div>
+                    <div class="gr_custom_author_">
+                        by <a rel="nofollow" href="https://www.goodreads.com/author/show/46097.Richard_Paul_Evans">Richard Paul Evans</a>
+                    </div>
+                </div>
+                <div class="gr_custom_each_container_">
+                    <div class="gr_custom_book_container_">
+                        <a title="Pillage (Pillage, #1)" rel="nofollow" href="https://www.goodreads.com/review/show/8015122527?utm_medium=api&amp;utm_source=custom_widget"><img alt="Pillage" border="0" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327100889l/2775759._SX50_.jpg" /></a>
+                    </div>
+                    <div class="gr_custom_rating_">
+                        <span class=" staticStars notranslate" title="liked it"><img alt="liked it" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_active.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /><img alt="" src="https://s.gr-assets.com/images/layout/gr_red_star_inactive.png" /></span>
+                    </div>
+                    <div class="gr_custom_title_">
+                        <a rel="nofollow" href="https://www.goodreads.com/review/show/8015122527?utm_medium=api&amp;utm_source=custom_widget">Pillage</a>
+                    </div>
+                    <div class="gr_custom_author_">
+                        by <a rel="nofollow" href="https://www.goodreads.com/author/show/125984.Obert_Skye">Obert Skye</a>
+                    </div>
+                </div>
+                <br style="clear: both"/>
+                <center>
+                    <a rel="nofollow" href="https://www.goodreads.com/"><img alt="goodreads.com" style="border:0" src="https://s.gr-assets.com/images/widget/widget_logo.gif" /></a>
+                </center>
+                <noscript>
+                    Share <a rel="nofollow" href="https://www.goodreads.com/">book reviews</a> and ratings with NB, and even join a <a rel="nofollow" href="https://www.goodreads.com/group">book club</a> on Goodreads.
+                </noscript>
+            </div>
+        </div>
+        
+        <script src="https://www.goodreads.com/review/custom_widget/188265528.NB's%20bookshelf:%20read?cover_position=&cover_size=&num_books=5&order=&shelf=&sort=&widget_bg_transparent=" type="text/javascript" charset="utf-8"></script>
+    </div>
+</body>
+</html>
