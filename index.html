@@ -630,7 +630,10 @@
             <div class="portfolio-summary" id="portfolioSummary"></div>
             <div class="portfolio-toolbar">
                 <span id="portfolioAsOf" style="color:#666; font-size:14px;"></span>
-                <button class="btn" onclick="openInvestmentModal()">+ Add Investment</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-secondary" id="refreshPricesBtn" onclick="updateDailyPrices(true)">Refresh Prices</button>
+                    <button class="btn" onclick="openInvestmentModal()">+ Add Investment</button>
+                </div>
             </div>
             <div class="portfolio-table-wrapper">
                 <table class="portfolio-table" id="portfolioTable">
@@ -762,12 +765,78 @@
                 }
             });
             window.scrollTo(0, 0);
-            if (pageName === 'portfolio') renderPortfolio();
+            if (pageName === 'portfolio') {
+                renderPortfolio();
+                updateDailyPrices();
+            }
         }
 
         // ---- Portfolio dashboard ----
         const PORTFOLIO_STORAGE_KEY = 'stockPortfolio';
+        const PORTFOLIO_PRICES_UPDATED_KEY = 'stockPortfolioPricesUpdated';
         let portfolioSort = { key: null, dir: 1 };
+
+        function todayStr() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function setPortfolioStatus(text) {
+            const el = document.getElementById('portfolioAsOf');
+            if (el) el.textContent = text;
+        }
+
+        async function fetchQuote(ticker) {
+            try {
+                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+                return typeof price === 'number' ? price : null;
+            } catch (err) {
+                console.error(`Price fetch failed for ${ticker}:`, err);
+                return null;
+            }
+        }
+
+        async function updateDailyPrices(force = false) {
+            const today = todayStr();
+            if (!force && localStorage.getItem(PORTFOLIO_PRICES_UPDATED_KEY) === today) return;
+
+            const investments = loadInvestments();
+            if (!investments.length) {
+                localStorage.setItem(PORTFOLIO_PRICES_UPDATED_KEY, today);
+                return;
+            }
+
+            const refreshBtn = document.getElementById('refreshPricesBtn');
+            if (refreshBtn) refreshBtn.disabled = true;
+            setPortfolioStatus('Refreshing prices…');
+
+            const tickers = [...new Set(investments.map(i => i.ticker))];
+            const quotes = {};
+            await Promise.all(tickers.map(async (t) => { quotes[t] = await fetchQuote(t); }));
+            const spPrice = await fetchQuote('^GSPC');
+
+            let failures = 0;
+            investments.forEach(inv => {
+                if (quotes[inv.ticker] != null) {
+                    inv.lastPx = quotes[inv.ticker];
+                } else {
+                    failures++;
+                }
+                if (spPrice != null) inv.spCurrentPx = spPrice;
+            });
+
+            saveInvestments(investments);
+            localStorage.setItem(PORTFOLIO_PRICES_UPDATED_KEY, today);
+            if (refreshBtn) refreshBtn.disabled = false;
+            renderPortfolio();
+            if (failures) {
+                setPortfolioStatus(`Prices last updated ${today} (${failures} of ${tickers.length} tickers failed to refresh)`);
+            }
+        }
 
         function loadInvestments() {
             try {
@@ -918,7 +987,8 @@
                 </div>
             `;
 
-            document.getElementById('portfolioAsOf').textContent = `As of ${new Date().toLocaleDateString()}`;
+            const lastUpdated = localStorage.getItem(PORTFOLIO_PRICES_UPDATED_KEY);
+            setPortfolioStatus(lastUpdated ? `Prices last updated ${lastUpdated}` : 'Prices not yet updated');
         }
 
         document.getElementById('investmentForm').addEventListener('submit', function (e) {
