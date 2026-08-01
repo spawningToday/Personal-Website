@@ -306,6 +306,196 @@
                 height: 200px;
             }
         }
+        .portfolio-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .summary-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .summary-card .summary-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        .summary-card .summary-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .portfolio-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: 2px solid #000;
+            background-color: #000;
+            color: #fff;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.75;
+        }
+        .btn-secondary {
+            background-color: #fff;
+            color: #000;
+        }
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 13px;
+            border-width: 1px;
+        }
+        .portfolio-table-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        table.portfolio-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        table.portfolio-table th,
+        table.portfolio-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        table.portfolio-table th {
+            background-color: #fafafa;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+        }
+        table.portfolio-table th:hover {
+            background-color: #f0f0f0;
+        }
+        table.portfolio-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+        .positive {
+            color: #157347;
+            font-weight: 600;
+        }
+        .negative {
+            color: #c0392b;
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge-long {
+            background-color: #e6f4ea;
+            color: #157347;
+        }
+        .badge-short {
+            background-color: #fdecea;
+            color: #c0392b;
+        }
+        .row-actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: underline;
+            margin-right: 8px;
+            color: #000;
+        }
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #666;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal h2 {
+            margin-bottom: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -318,6 +508,7 @@
             <a href="#" class="nav-link active" data-page="home" onclick="showPage('home'); return false;">me</a>
             <a href="#" class="nav-link" data-page="resume" onclick="showPage('resume'); return false;">Resume</a>
             <a href="#" class="nav-link" data-page="projects" onclick="showPage('projects'); return false;">Projects</a>
+            <a href="#" class="nav-link" data-page="portfolio" onclick="showPage('portfolio'); return false;">Portfolio</a>
             <a href="#" class="nav-link" data-page="writing" onclick="showPage('writing'); return false;">Writing</a>
             <a href="#" class="nav-link" data-page="contact" onclick="showPage('contact'); return false;">Contact</a>
         </nav>
@@ -434,6 +625,104 @@
             <h2>Projects</h2>
             <p>Github: <a href="https://github.com/spawningToday">nicholasbassett</a></p>
         </div>
+        <div id="portfolio" class="page-content">
+            <h2>Portfolio</h2>
+            <div class="portfolio-summary" id="portfolioSummary"></div>
+            <div class="portfolio-toolbar">
+                <span id="portfolioAsOf" style="color:#666; font-size:14px;"></span>
+                <button class="btn" onclick="openInvestmentModal()">+ Add Investment</button>
+            </div>
+            <div class="portfolio-table-wrapper">
+                <table class="portfolio-table" id="portfolioTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">Name</th>
+                            <th data-sort="ticker">Ticker</th>
+                            <th data-sort="position">L/S</th>
+                            <th data-sort="weight">Weight</th>
+                            <th data-sort="dateOfTrans">Date of Trans</th>
+                            <th data-sort="purchasePx">Purchase Px</th>
+                            <th data-sort="lastPx">Last Px</th>
+                            <th data-sort="move">Move</th>
+                            <th data-sort="divYield">Div Yield</th>
+                            <th data-sort="totalReturn">Total Return</th>
+                            <th data-sort="spEntryPx">S&amp;P Px</th>
+                            <th data-sort="spMove">S&amp;P Move</th>
+                            <th data-sort="alpha">Alpha</th>
+                            <th>Rationale</th>
+                            <th>Performance</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-overlay" id="investmentModalOverlay">
+            <div class="modal">
+                <h2 id="investmentModalTitle">Add Investment</h2>
+                <form id="investmentForm">
+                    <input type="hidden" id="investmentId">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="investmentName">Company Name</label>
+                            <input type="text" id="investmentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentTicker">Ticker</label>
+                            <input type="text" id="investmentTicker" required style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentPosition">Position</label>
+                            <select id="investmentPosition">
+                                <option value="L">Long</option>
+                                <option value="S">Short</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentWeight">Weight (%)</label>
+                            <input type="number" id="investmentWeight" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentDate">Date of Trans</label>
+                            <input type="date" id="investmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentPurchasePx">Purchase Px ($)</label>
+                            <input type="number" id="investmentPurchasePx" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentLastPx">Last Px ($)</label>
+                            <input type="number" id="investmentLastPx" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentDivYield">Div Yield (%)</label>
+                            <input type="number" id="investmentDivYield" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentSpEntryPx">S&amp;P Px at Entry</label>
+                            <input type="number" id="investmentSpEntryPx" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentSpCurrentPx">S&amp;P Px Current</label>
+                            <input type="number" id="investmentSpCurrentPx" step="0.01" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="investmentRationale">Rationale</label>
+                            <textarea id="investmentRationale"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="investmentPerformance">Performance Notes</label>
+                            <input type="text" id="investmentPerformance">
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeInvestmentModal()">Cancel</button>
+                        <button type="submit" class="btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div id="writing" class="page-content">
             <h2>Writing</h2>
             <a href="https://substack.com/@nicholasbassett" class="substack-link" target="_blank">
@@ -473,7 +762,203 @@
                 }
             });
             window.scrollTo(0, 0);
+            if (pageName === 'portfolio') renderPortfolio();
         }
+
+        // ---- Portfolio dashboard ----
+        const PORTFOLIO_STORAGE_KEY = 'stockPortfolio';
+        let portfolioSort = { key: null, dir: 1 };
+
+        function loadInvestments() {
+            try {
+                return JSON.parse(localStorage.getItem(PORTFOLIO_STORAGE_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveInvestments(investments) {
+            localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(investments));
+        }
+
+        function computeMetrics(inv) {
+            const moveRaw = (inv.lastPx - inv.purchasePx) / inv.purchasePx * 100;
+            const move = inv.position === 'S' ? -moveRaw : moveRaw;
+            const totalReturn = move + Number(inv.divYield || 0);
+            const spMove = (inv.spCurrentPx - inv.spEntryPx) / inv.spEntryPx * 100;
+            const alpha = totalReturn - spMove;
+            return { move, totalReturn, spMove, alpha };
+        }
+
+        function fmtPct(n) {
+            return `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
+        }
+
+        function fmtMoney(n) {
+            return `$${Number(n).toFixed(2)}`;
+        }
+
+        function pctClass(n) {
+            return n >= 0 ? 'positive' : 'negative';
+        }
+
+        function openInvestmentModal(id) {
+            const form = document.getElementById('investmentForm');
+            form.reset();
+            document.getElementById('investmentId').value = '';
+            document.getElementById('investmentModalTitle').textContent = 'Add Investment';
+            if (id) {
+                const inv = loadInvestments().find(i => i.id === id);
+                if (inv) {
+                    document.getElementById('investmentModalTitle').textContent = 'Edit Investment';
+                    document.getElementById('investmentId').value = inv.id;
+                    document.getElementById('investmentName').value = inv.name;
+                    document.getElementById('investmentTicker').value = inv.ticker;
+                    document.getElementById('investmentPosition').value = inv.position;
+                    document.getElementById('investmentWeight').value = inv.weight;
+                    document.getElementById('investmentDate').value = inv.dateOfTrans;
+                    document.getElementById('investmentPurchasePx').value = inv.purchasePx;
+                    document.getElementById('investmentLastPx').value = inv.lastPx;
+                    document.getElementById('investmentDivYield').value = inv.divYield;
+                    document.getElementById('investmentSpEntryPx').value = inv.spEntryPx;
+                    document.getElementById('investmentSpCurrentPx').value = inv.spCurrentPx;
+                    document.getElementById('investmentRationale').value = inv.rationale;
+                    document.getElementById('investmentPerformance').value = inv.performance;
+                }
+            } else {
+                document.getElementById('investmentDate').valueAsDate = new Date();
+            }
+            document.getElementById('investmentModalOverlay').classList.add('active');
+        }
+
+        function closeInvestmentModal() {
+            document.getElementById('investmentModalOverlay').classList.remove('active');
+        }
+
+        function deleteInvestment(id) {
+            if (!confirm('Remove this investment from the portfolio?')) return;
+            const investments = loadInvestments().filter(i => i.id !== id);
+            saveInvestments(investments);
+            renderPortfolio();
+        }
+
+        function sortPortfolio(key) {
+            portfolioSort.dir = portfolioSort.key === key ? -portfolioSort.dir : 1;
+            portfolioSort.key = key;
+            renderPortfolio();
+        }
+
+        function renderPortfolio() {
+            const investments = loadInvestments();
+            const rows = investments.map(inv => ({ ...inv, ...computeMetrics(inv) }));
+
+            if (portfolioSort.key) {
+                rows.sort((a, b) => {
+                    const av = a[portfolioSort.key];
+                    const bv = b[portfolioSort.key];
+                    if (typeof av === 'string') return av.localeCompare(bv) * portfolioSort.dir;
+                    return (av - bv) * portfolioSort.dir;
+                });
+            }
+
+            const tbody = document.getElementById('portfolioTableBody');
+            if (!rows.length) {
+                tbody.innerHTML = `<tr><td colspan="16"><div class="empty-state">No investments yet. Click "+ Add Investment" to get started.</div></td></tr>`;
+            } else {
+                tbody.innerHTML = rows.map(r => `
+                    <tr>
+                        <td>${r.name}</td>
+                        <td>${r.ticker}</td>
+                        <td><span class="badge ${r.position === 'L' ? 'badge-long' : 'badge-short'}">${r.position === 'L' ? 'Long' : 'Short'}</span></td>
+                        <td>${Number(r.weight).toFixed(2)}%</td>
+                        <td>${r.dateOfTrans}</td>
+                        <td>${fmtMoney(r.purchasePx)}</td>
+                        <td>${fmtMoney(r.lastPx)}</td>
+                        <td class="${pctClass(r.move)}">${fmtPct(r.move)}</td>
+                        <td>${Number(r.divYield).toFixed(2)}%</td>
+                        <td class="${pctClass(r.totalReturn)}">${fmtPct(r.totalReturn)}</td>
+                        <td>${fmtMoney(r.spEntryPx)}</td>
+                        <td class="${pctClass(r.spMove)}">${fmtPct(r.spMove)}</td>
+                        <td class="${pctClass(r.alpha)}">${fmtPct(r.alpha)}</td>
+                        <td>${r.rationale ? r.rationale.replace(/</g, '&lt;') : ''}</td>
+                        <td>${r.performance ? r.performance.replace(/</g, '&lt;') : ''}</td>
+                        <td class="row-actions">
+                            <button onclick="openInvestmentModal('${r.id}')">Edit</button>
+                            <button onclick="deleteInvestment('${r.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            const summaryEl = document.getElementById('portfolioSummary');
+            const totalWeight = rows.reduce((s, r) => s + Number(r.weight), 0);
+            const weightedReturn = totalWeight ? rows.reduce((s, r) => s + r.totalReturn * r.weight, 0) / totalWeight : 0;
+            const weightedAlpha = totalWeight ? rows.reduce((s, r) => s + r.alpha * r.weight, 0) / totalWeight : 0;
+            const winRate = rows.length ? (rows.filter(r => r.totalReturn > 0).length / rows.length * 100) : 0;
+            summaryEl.innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-label">Positions</div>
+                    <div class="summary-value">${rows.length}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Total Weight</div>
+                    <div class="summary-value">${totalWeight.toFixed(2)}%</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Weighted Return</div>
+                    <div class="summary-value ${pctClass(weightedReturn)}">${fmtPct(weightedReturn)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Weighted Alpha</div>
+                    <div class="summary-value ${pctClass(weightedAlpha)}">${fmtPct(weightedAlpha)}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Win Rate</div>
+                    <div class="summary-value">${winRate.toFixed(0)}%</div>
+                </div>
+            `;
+
+            document.getElementById('portfolioAsOf').textContent = `As of ${new Date().toLocaleDateString()}`;
+        }
+
+        document.getElementById('investmentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('investmentId').value;
+            const investments = loadInvestments();
+            const data = {
+                id: id || `inv_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+                name: document.getElementById('investmentName').value.trim(),
+                ticker: document.getElementById('investmentTicker').value.trim().toUpperCase(),
+                position: document.getElementById('investmentPosition').value,
+                weight: parseFloat(document.getElementById('investmentWeight').value),
+                dateOfTrans: document.getElementById('investmentDate').value,
+                purchasePx: parseFloat(document.getElementById('investmentPurchasePx').value),
+                lastPx: parseFloat(document.getElementById('investmentLastPx').value),
+                divYield: parseFloat(document.getElementById('investmentDivYield').value) || 0,
+                spEntryPx: parseFloat(document.getElementById('investmentSpEntryPx').value),
+                spCurrentPx: parseFloat(document.getElementById('investmentSpCurrentPx').value),
+                rationale: document.getElementById('investmentRationale').value.trim(),
+                performance: document.getElementById('investmentPerformance').value.trim()
+            };
+            const existingIndex = investments.findIndex(i => i.id === id);
+            if (existingIndex >= 0) {
+                investments[existingIndex] = data;
+            } else {
+                investments.push(data);
+            }
+            saveInvestments(investments);
+            closeInvestmentModal();
+            renderPortfolio();
+        });
+
+        document.querySelectorAll('#portfolioTable th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => sortPortfolio(th.getAttribute('data-sort')));
+        });
+
+        document.getElementById('investmentModalOverlay').addEventListener('click', function (e) {
+            if (e.target === this) closeInvestmentModal();
+        });
+
         (function () {
             const globalDefaults = (window.SubstackFeedWidget || {});
             const defaults = {
