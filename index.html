@@ -664,6 +664,7 @@
         <div class="modal-overlay" id="investmentModalOverlay">
             <div class="modal">
                 <h2 id="investmentModalTitle">Add Investment</h2>
+                <p id="investmentAutoFillStatus" style="font-size:13px; color:#666; min-height:16px; margin-bottom:10px;"></p>
                 <form id="investmentForm">
                     <input type="hidden" id="investmentId">
                     <div class="form-grid">
@@ -800,6 +801,91 @@
             }
         }
 
+        async function fetchHistoricalPrice(ticker, dateStr) {
+            try {
+                const targetMs = new Date(`${dateStr}T00:00:00Z`).getTime();
+                const period2 = Math.floor(targetMs / 1000) + 86400;
+                const period1 = period2 - 10 * 86400;
+                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?period1=${period1}&period2=${period2}&interval=1d`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                const result = data?.chart?.result?.[0];
+                const timestamps = result?.timestamp;
+                const closes = result?.indicators?.quote?.[0]?.close;
+                if (!timestamps || !closes) return null;
+                let price = null;
+                for (let i = 0; i < timestamps.length; i++) {
+                    if (closes[i] != null && timestamps[i] * 1000 <= targetMs + 86400000 - 1) {
+                        price = closes[i];
+                    }
+                }
+                return price;
+            } catch (err) {
+                console.error(`Historical price fetch failed for ${ticker} on ${dateStr}:`, err);
+                return null;
+            }
+        }
+
+        const AUTOFILLABLE_FIELDS = ['investmentPurchasePx', 'investmentLastPx', 'investmentSpEntryPx', 'investmentSpCurrentPx'];
+
+        function clearAutofillFlags() {
+            AUTOFILLABLE_FIELDS.forEach(id => { document.getElementById(id).dataset.autofilled = ''; });
+        }
+
+        // Overwrites a field if it's empty, or if its current value was itself set by
+        // autofill (so a later ticker/date change can correct an earlier guess) — but
+        // never touches a value the user typed in by hand.
+        function setSmart(id, value) {
+            const el = document.getElementById(id);
+            if (!el || value == null) return;
+            if (el.value === '' || el.dataset.autofilled === 'true') {
+                el.value = value;
+                el.dataset.autofilled = 'true';
+            }
+        }
+
+        let autofillRequestId = 0;
+
+        async function autofillMarketData() {
+            const requestId = ++autofillRequestId;
+            const ticker = document.getElementById('investmentTicker').value.trim().toUpperCase();
+            const dateVal = document.getElementById('investmentDate').value;
+            if (!ticker) return;
+
+            const statusEl = document.getElementById('investmentAutoFillStatus');
+            if (statusEl) statusEl.textContent = 'Looking up prices…';
+
+            const [currentPx, currentSp] = await Promise.all([fetchQuote(ticker), fetchQuote('^GSPC')]);
+            if (requestId !== autofillRequestId) return; // a newer ticker/date change superseded this fetch
+
+            setSmart('investmentLastPx', currentPx);
+            setSmart('investmentSpCurrentPx', currentSp);
+
+            let historyFailed = false;
+            if (dateVal) {
+                if (dateVal === todayStr()) {
+                    setSmart('investmentPurchasePx', currentPx);
+                    setSmart('investmentSpEntryPx', currentSp);
+                } else {
+                    const [histPx, histSp] = await Promise.all([
+                        fetchHistoricalPrice(ticker, dateVal),
+                        fetchHistoricalPrice('^GSPC', dateVal)
+                    ]);
+                    if (requestId !== autofillRequestId) return;
+                    setSmart('investmentPurchasePx', histPx);
+                    setSmart('investmentSpEntryPx', histSp);
+                    historyFailed = histPx == null || histSp == null;
+                }
+            }
+
+            if (statusEl) {
+                statusEl.textContent = (currentPx == null || historyFailed)
+                    ? 'Could not auto-fill some prices — please enter them manually.'
+                    : 'Prices auto-filled. Weight (%) still needs your input.';
+            }
+        }
+
         async function updateDailyPrices(force = false) {
             const today = todayStr();
             if (!force && localStorage.getItem(PORTFOLIO_PRICES_UPDATED_KEY) === today) return;
@@ -874,6 +960,8 @@
         function openInvestmentModal(id) {
             const form = document.getElementById('investmentForm');
             form.reset();
+            clearAutofillFlags();
+            document.getElementById('investmentAutoFillStatus').textContent = '';
             document.getElementById('investmentId').value = '';
             document.getElementById('investmentModalTitle').textContent = 'Add Investment';
             if (id) {
@@ -990,6 +1078,12 @@
             const lastUpdated = localStorage.getItem(PORTFOLIO_PRICES_UPDATED_KEY);
             setPortfolioStatus(lastUpdated ? `Prices last updated ${lastUpdated}` : 'Prices not yet updated');
         }
+
+        document.getElementById('investmentTicker').addEventListener('blur', autofillMarketData);
+        document.getElementById('investmentDate').addEventListener('change', autofillMarketData);
+        AUTOFILLABLE_FIELDS.forEach(id => {
+            document.getElementById(id).addEventListener('input', function () { this.dataset.autofilled = ''; });
+        });
 
         document.getElementById('investmentForm').addEventListener('submit', function (e) {
             e.preventDefault();
